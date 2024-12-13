@@ -1,0 +1,45 @@
+import FinanceDataReader as fdr
+
+import pandas as pd
+stocks = {"삼성전자": "005930" , "sk": "034730" , "CJ" : "001040" , "SK하이닉스" : "000660"}
+stock = input("종목을 말하시오 : ")
+s = stocks[stock]
+if s:
+    data = fdr.DataReader(s, '2024-1-01', '2024-12-13')
+    def calculate_rsi(data, period=14):
+
+        delta = data['Close'].diff()
+        gain = delta.where(delta > 0, 0)
+        loss = -delta.where(delta < 0, 0)
+        avg_gain = gain.rolling(window=period, min_periods=1).mean()
+        avg_loss = loss.rolling(window=period, min_periods=1).mean()
+
+        rs = avg_gain/ avg_loss
+        rsi = 100 - (100 / (1 + rs))
+
+        return rsi
+
+    data['RSI'] = calculate_rsi(data)
+
+    import matplotlib.pyplot as plt
+
+    plt.figure(figsize=(12, 6))
+    ax1 = plt.gca()
+    ax1.plot(data.index, data['RSI'], label='RSI')
+    ax1.axhline(70, color='red', linestyle='--', label='Overbought (70)')
+    ax1.axhline(30, color='blue', linestyle='--', label='Oversold (30)')
+    ax1.legend(loc='upper left')
+
+
+    ax2 = ax1.twinx()
+    ax2.plot(data.index, data['Close'], color='RED', label='Close Price')
+    ax2.set_ylabel('Close Price', color='blue')
+    ax2.tick_params(axis='y', labelcolor='blue')
+    ax2.set_title('Close Price and RSI')
+    ax2.legend(loc='upper left')
+
+    plt.show()
+
+
+
+
