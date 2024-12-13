@@ -1,0 +1,3 @@
+pip install finance-datareader
+pip install beautifulsoup4 lxml
+pip install plotly
