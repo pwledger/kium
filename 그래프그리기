@@ -1,0 +1,20 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+
+plt.rc('font', family='gulim') # For Windows
+
+data = {"Name" : ["수민","리후","윤성"] , "height" : [170,145,165]}
+
+data = pd.DataFrame(data)
+
+plt.plot(data["Name"],data["height"],"--", color = "Blue" , linewidth=4, label='키(cm)')
+plt.bar(data["Name"],data["height"] , 0.2 , label='키(cm)' , color = ["r","g" ,"b"])
+plt.xlabel('Name' ,labelpad=10 , loc = "right")
+plt.ylabel('height' ,labelpad=10 , loc = "top")
+
+plt.axhline(140, color='red', linestyle='--', label='Overbought (170)')
+
+plt.ylim([100, 190])
+
+plt.legend(loc=(0.0, 1.0))
+plt.show()
